@@ -17,21 +17,3 @@ final class TaskInitial extends TaskState {
 final class UpdateTask extends TaskState{
   UpdateTask(super.reminderList);
 }
-
-
-class ReminderState extends Equatable {
-  final List<ReminderModel> reminderList;
-  ReminderState(this.reminderList);
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [reminderList];
-}
-
-class ReminderInitial extends ReminderState{
-  ReminderInitial() : super(const [],);
-}
-
-class ReminderUpdate extends ReminderState{
-  ReminderUpdate(super.reminderList);
-}
