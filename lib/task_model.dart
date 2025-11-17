@@ -24,11 +24,23 @@ class TaskModel extends Equatable {
 class ReminderModel extends Equatable {
   final int id;
   final String title;
-  final DateTime dateTime;
+  final bool isCompleted;
 
-  const ReminderModel({required this.id, required this.title, required this.dateTime});
+
+
+  const ReminderModel({required this.id, required this.title, required this.isCompleted});
 
   @override
   // TODO: implement props
-  List<Object?> get props => [id, title, dateTime];
+  List<Object?> get props => [id, title, isCompleted];
+
+
+  ReminderModel copyWith({int? id, String? title, bool? isCompleted}) {
+    return ReminderModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      isCompleted: isCompleted ?? this.isCompleted,
+    );
+  }
+
 }

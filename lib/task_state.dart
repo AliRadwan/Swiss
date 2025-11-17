@@ -32,6 +32,6 @@ class ReminderInitial extends ReminderState{
   ReminderInitial() : super(const [],);
 }
 
-class RweminderUpdate extends ReminderState{
-  RweminderUpdate(super.reminderList);
+class ReminderUpdate extends ReminderState{
+  ReminderUpdate(super.reminderList);
 }

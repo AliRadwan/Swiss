@@ -11,7 +11,6 @@ class TaskCubit extends Cubit<TaskState> {
 
 
   addTask(TaskModel task){
-    // emit(UpdateTask(List.from(state.taskList)..add(task)));
     emit(UpdateTask([... state.taskList,task]));
   }
   addTaskByTitle( String title){
@@ -37,5 +36,30 @@ class TaskCubit extends Cubit<TaskState> {
     }).toList();
     emit(UpdateTask(updatedList));
   }
+}
+
+class Remindercubit extends Cubit<ReminderState>{
+  Remindercubit() : super(ReminderInitial());
+
+  addReminder(ReminderModel reminder){
+    emit(ReminderUpdate(List.from(state.reminderList)..add(reminder)));
+  }
+
+  removeReminder(int id){
+    final List<ReminderModel> upfateList = state.reminderList.where((reminder)=> reminder.id != id).toList();
+    emit(ReminderState(upfateList));
+  }
+
+  toggleReminder(int id ){
+    final List<ReminderModel> updateList = state.reminderList.map((reminder){
+      if (reminder.id == id ){
+        return reminder.copyWith(isCompleted:!reminder.isCompleted);
+      }
+      return reminder;
+    }).toList();
+    emit(ReminderUpdate(updateList));
+  }
+
+
 }
 
