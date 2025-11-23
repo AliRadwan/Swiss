@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/reminder_bloc.dart';
-import 'package:todo/task_cubit.dart';
-import 'package:todo/task_model.dart';
+import 'package:todo/api_flow/ui/ProductScreen.dart';
+import 'package:todo/reminder/reminder_bloc.dart';
+import 'package:todo/task/task_cubit.dart';
+import 'package:todo/task/task_model.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {
@@ -37,6 +38,10 @@ class TodoScreen extends StatelessWidget {
           return Center(
             child: Column(
               children: [
+                SizedBox(height: 200,),
+                ElevatedButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductScreen()));
+                }, child: Text("Product Screen")),
                 SizedBox(height: 300,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
