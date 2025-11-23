@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:todo/task_model.dart';
+import 'package:todo/task/task_model.dart';
 
 part 'reminder_event.dart';
 part 'reminder_state.dart';

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widget_previews.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/reminder_bloc.dart';
-import 'package:todo/task_cubit.dart';
-import 'package:todo/task_model.dart';
+import 'package:todo/api_flow/ui/ProductScreen.dart';
+import 'package:todo/reminder/reminder_bloc.dart';
+import 'package:todo/task/task_cubit.dart';
+import 'package:todo/task/task_model.dart';
 import 'package:uuid/uuid.dart';
 
 void main() {
@@ -35,66 +36,79 @@ class TodoScreen extends StatelessWidget {
         child: BlocBuilder<TaskCubit,TaskState>(builder: (context,state){
           final blocContoller = context.read<TaskCubit>();
           return Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                crossAxisAlignment: .center,
-                children: [
-                  SizedBox(height: 100,),
-                  Padding(
+            child: Column(
+              children: [
+                SizedBox(height: 200,),
+                ElevatedButton(onPressed: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context)=>ProductScreen()));
+                }, child: Text("Product Screen")),
+                SizedBox(height: 300,
+                  child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: TextFormField(
-                      controller: textEditingController,
-                      decoration: InputDecoration(
-                        border: OutlineInputBorder(),
-                        labelText: 'Enter todo item',
-                      ),),
-                  ),
-                  Row(
-                    mainAxisAlignment: .spaceBetween,
-                    children: [
-                      ElevatedButton(onPressed: (){
-                        context.read<TaskCubit>().addTask(TaskModel(id: Uuid().v4(), title: textEditingController.text, isCompleted: true));
-                      }, child: Text('Cancel')  ,),
-                      ElevatedButton(onPressed: () {
-                        context.read<TaskCubit>().addTask(
-                          TaskModel(id: DateTime.now().millisecondsSinceEpoch.toString(),
-                              title: textEditingController.text,
-                              isCompleted: false),
-                        );
-                      }, child: Text('Add')  ,
-                      ),
-
-                      ElevatedButton(onPressed: (){
-                        context.read<TaskCubit>().addTaskByTitle(textEditingController.text);
-                      }, child: Text('Add')  ,)
-                    ],
-                  ),
-                  Text('Todo App'),
-                  Expanded(child: ListView.builder(
-                    itemCount: state.taskList.length,
-                    itemBuilder: (context,index){
-                      final task = state.taskList[index];
-                      return ListTile(
-                        title: Text(task.title),
-                        leading: Checkbox(
-                          value: task.isCompleted,
-                          onChanged: (value) {
-                            context.read<TaskCubit>().tpggleTask(task.id);
-                          },
+                    child: Column(
+                      crossAxisAlignment: .center,
+                      children: [
+                        SizedBox(height: 100,),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            controller: textEditingController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Enter todo item',
+                            ),),
                         ),
-                        trailing: IconButton(onPressed: (){
-                          blocContoller.removeTask(task.id);
-                        }, icon: Icon(Icons.delete)),
-                        onLongPress: (){
-                          if(textEditingController.text.isEmpty) return;
-                          blocContoller.removeTask(task.id);
-                        },
-                      );
-                    },
-                  ))
-                ],
-              ),
+                        Row(
+                          mainAxisAlignment: .spaceBetween,
+                          children: [
+                            ElevatedButton(onPressed: (){
+                              context.read<TaskCubit>().addTask(TaskModel(id: Uuid().v4(), title: textEditingController.text, isCompleted: true));
+                            }, child: Text('Cancel')  ,),
+                            ElevatedButton(onPressed: () {
+                              context.read<TaskCubit>().addTask(
+                                TaskModel(id: DateTime.now().millisecondsSinceEpoch.toString(),
+                                    title: textEditingController.text,
+                                    isCompleted: false),
+                              );
+                            }, child: Text('Add')  ,
+                            ),
+
+                            ElevatedButton(onPressed: (){
+                              context.read<TaskCubit>().addTaskByTitle(textEditingController.text);
+                            }, child: Text('Add')  ,)
+                          ],
+                        ),
+                        Text('Todo App'),
+                        Expanded(child: ListView.builder(
+                          itemCount: state.taskList.length,
+                          itemBuilder: (context,index){
+                            final task = state.taskList[index];
+                            return ListTile(
+                              title: Text(task.title),
+                              leading: Checkbox(
+                                value: task.isCompleted,
+                                onChanged: (value) {
+                                  context.read<TaskCubit>().tpggleTask(task.id);
+                                },
+                              ),
+                              trailing: IconButton(onPressed: (){
+                                blocContoller.removeTask(task.id);
+                              }, icon: Icon(Icons.delete)),
+                              onLongPress: (){
+                                if(textEditingController.text.isEmpty) return;
+                                blocContoller.removeTask(task.id);
+                              },
+                            );
+                          },
+                        )),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                    height: 300,
+                    child: ReMinderScreen())
+              ],
             ),
           );
         }),
@@ -124,8 +138,9 @@ class ReMinderScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
-      body: BlocProvider(
+    return  Container(
+      color: Colors.amber,
+      child: BlocProvider(
   create: (context) => ReminderBloc(),
   child: BlocBuilder<ReminderBloc,ReminderState>(builder: (context,state){
     final blocContoller = context.read<ReminderBloc>();
@@ -149,18 +164,6 @@ class ReMinderScreen extends StatelessWidget {
               mainAxisAlignment: .spaceBetween,
               children: [
                 ElevatedButton(onPressed: (){
-                  context.read<TaskCubit>().addTask(TaskModel(id: Uuid().v4(), title: textEditingController.text, isCompleted: true));
-                }, child: Text('Cancel')  ,),
-                ElevatedButton(onPressed: () {
-                  context.read<TaskCubit>().addTask(
-                    TaskModel(id: DateTime.now().millisecondsSinceEpoch.toString(),
-                        title: textEditingController.text,
-                        isCompleted: false),
-                  );
-                }, child: Text('Add')  ,
-                ),
-
-                ElevatedButton(onPressed: (){
                   blocContoller.add(AddReminderEvent( ReminderModel(id: DateTime.now().millisecondsSinceEpoch.toString(),
                       title: textEditingController.text,
                       isCompleted: false))) ;
@@ -175,7 +178,7 @@ class ReMinderScreen extends StatelessWidget {
                 final task = state.reminderList[index];
                 return ListTile(
                   title: Text(task.title),
-                  leading: Checkbox(
+                  leading: Radio(
                     value: task.isCompleted,
                     onChanged: (value) {
                       blocContoller.add(ToggleReminderEvent(state.reminderList[index].id));
