@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:todo/task_model.dart';
+import 'package:todo/task/task_model.dart';
 import 'package:uuid/uuid.dart';
 
 part 'task_state.dart';

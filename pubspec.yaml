@@ -38,6 +38,7 @@ dependencies:
   flutter_bloc:
   genui: ^0.5.1
   flutter_gen_ai_chat_ui: ^2.5.0
+  http: ^1.6.0
   uuid:
 
 dev_dependencies:
